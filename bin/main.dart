@@ -14,11 +14,10 @@ import 'package:import_sorter/sort.dart' as sort;
 void main(List<String> args) {
   // Parsing arguments
   final parser = ArgParser();
-  parser.addFlag('emojis', abbr: 'e', negatable: false);
+  parser.addFlag('all-dirs', abbr: 'a', negatable: false);
   parser.addFlag('ignore-config', negatable: false);
   parser.addFlag('help', abbr: 'h', negatable: false);
   parser.addFlag('exit-if-changed', negatable: false);
-  parser.addFlag('no-comments', negatable: false);
   final argResults = parser.parse(args).arguments;
   if (argResults.contains('-h') || argResults.contains('--help')) {
     local_args.outputHelp();
@@ -96,7 +95,7 @@ void main(List<String> args) {
     }
 
     final sortedFile = sort.sortImports(
-        file.readAsLinesSync(), packageName, emojis, exitOnChange, noComments);
+        file.readAsLinesSync(), packageName, exitOnChange);
     if (!sortedFile.updated) {
       continue;
     }

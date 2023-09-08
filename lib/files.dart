@@ -4,14 +4,19 @@ import 'dart:io';
 /// Get all the dart files for the project and the contents
 Map<String, File> dartFiles(String currentPath, List<String> args) {
   final dartFiles = <String, File>{};
-  final allContents = [
-    ..._readDir(currentPath, 'lib'),
-    ..._readDir(currentPath, 'bin'),
-    ..._readDir(currentPath, 'test'),
-    ..._readDir(currentPath, 'tests'),
-    ..._readDir(currentPath, 'test_driver'),
-    ..._readDir(currentPath, 'integration_test'),
-  ];
+  final allContents;
+  if (args.contains("-a") || args.contains("--all-dirs")) {
+    allContents = Directory(currentPath).listSync(recursive: true);
+  } else {
+    allContents = [
+      ..._readDir(currentPath, 'lib'),
+      ..._readDir(currentPath, 'bin'),
+      ..._readDir(currentPath, 'test'),
+      ..._readDir(currentPath, 'tests'),
+      ..._readDir(currentPath, 'test_driver'),
+      ..._readDir(currentPath, 'integration_test'),
+    ];
+  }
 
   for (final fileOrDir in allContents) {
     if (fileOrDir is File && fileOrDir.path.endsWith('.dart')) {
